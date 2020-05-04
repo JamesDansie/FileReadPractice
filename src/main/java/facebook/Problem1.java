@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Problem1 {
 //    from here; https://www.glassdoor.co.in/Interview/You-will-be-supplied-with-two-data-files-in-CSV-format-The-first-file-contains-statistics-about-various-dinosaurs-The-se-QTN_2088069.htm
@@ -108,8 +105,12 @@ public class Problem1 {
                 dino.speed = -1;
             }
         }
-
-        System.out.println(dinos);
+        dinos.sort(Comparator.comparing(Dino::getSpeed).reversed());
+        for(Dino currDino : dinos){
+            if(currDino.speed != -1){
+                System.out.println("Name: " + currDino.name + " Speed: " + currDino.speed);
+            }
+        }
     }
 }
 
@@ -127,5 +128,13 @@ class Dino{
                 ", STRIDE_LENGTH=" + STRIDE_LENGTH +
                 ", speed=" + speed +
                 '}';
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }
