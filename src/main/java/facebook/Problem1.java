@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -46,6 +47,53 @@ public class Problem1 {
 //          or store it in a hashmap...?
 //    next we'll store the first file in a hashmap where the key is the name and the value is the leg_length
 //    finally we'll loop through the list of the dinos, calculate the speed, and store the max as we go
+    public static List<Dino> getBiPedalStrideLength(){
+        List<Dino> dinoList = new LinkedList<>();
+        try {
+            FileInputStream dinoStream = new FileInputStream("resources/dataset1.csv");
+            Scanner sc = new Scanner(dinoStream);
+            // get rid of headers
+            sc.nextLine();
+            while(sc.hasNextLine()){
+                String input = sc.nextLine();
+                String[] intputSplit = input.split(",");
+
+                Dino newDino = new Dino();
+                newDino.name = intputSplit[0];
+                newDino.LEG_LENGTH = Float.parseFloat(intputSplit[1]);
+
+                dinoList.add(newDino);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return dinoList;
+    }
+
+    public static HashMap<String, Float> getLegLength(){
+        HashMap<String, Float> hmLength = new HashMap<>();
+
+        try {
+            FileInputStream dinoStream = new FileInputStream("resources/dataset2.csv");
+            Scanner sc = new Scanner(dinoStream);
+            // get rid of headers
+            sc.nextLine();
+            while(sc.hasNextLine()){
+                String input = sc.nextLine();
+                String[] inputSplit = input.split(",");
+
+                if(inputSplit[2].equals("bipedal")){
+                    hmLength.put(inputSplit[0], Float.parseFloat(inputSplit[1]));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return hmLength;
+    }
+
     public static void main(String[] args){
         // seems silly to have 3 different hashmaps, could be one dino helper class.
         List<Dino> dinos = getBiPedalStrideLength();
@@ -61,23 +109,7 @@ public class Problem1 {
             }
         }
 
-        try {
-            //trying different ways to read a file
-//            Scanner sc = new Scanner(new File("resources/dataset1.csv"));
-//            System.out.println(sc.next());
-
-            FileInputStream inputStream1 = new FileInputStream("resources/dataset1.csv");
-            Scanner sc1 = new Scanner(inputStream1);
-            while(sc1.hasNextLine()){
-                System.out.println(sc1.nextLine());
-            }
-            inputStream1.close();
-            sc1.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println(dinos);
     }
 }
 
@@ -86,4 +118,14 @@ class Dino{
     float LEG_LENGTH;
     float STRIDE_LENGTH;
     float speed;
+
+    @Override
+    public String toString() {
+        return "Dino{" +
+                "name='" + name + '\'' +
+                ", LEG_LENGTH=" + LEG_LENGTH +
+                ", STRIDE_LENGTH=" + STRIDE_LENGTH +
+                ", speed=" + speed +
+                '}';
+    }
 }
