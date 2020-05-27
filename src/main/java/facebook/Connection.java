@@ -19,16 +19,18 @@ public class Connection {
         con.setRequestMethod("GET");
 
         // checking for connection
-        System.out.println(url.getHost());
+        System.out.println("host url is: " + url.getHost());
 
         // checking http response (hooray 200!)
         int status = con.getResponseCode();
-        System.out.println("status = " + status);
+        System.out.println("http status = " + status);
 
         BufferedReader input = new BufferedReader(
                 new InputStreamReader(con.getInputStream())
         );
+        List<String> urls = new ArrayList<>();
 
+        // java webcrawler, will store all urls it finds in the html doc
         // printing out the http doc
         Scanner sc = new Scanner(input);
         while(sc.hasNextLine()){
@@ -39,23 +41,12 @@ public class Connection {
             Pattern regex = Pattern.compile(regexStr);
             Matcher matcher = regex.matcher(nextLine);
 
-            List<String> urls = new ArrayList<>();
-
             System.out.println("matcher find? " + matcher.find());
             while(matcher.find()){
                 urls.add(matcher.group());
             }
-
-            System.out.println(urls);
-
-//            String lookingFor = ".com";
-//            // simple search for other .com urls
-//            if(nextLine.contains(lookingFor)){
-//                System.out.println("contains a .com");
-//                System.out.println(nextLine);
-//            }
         }
-
+        System.out.println(urls);
         con.disconnect();
     }
 
